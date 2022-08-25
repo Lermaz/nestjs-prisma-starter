@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -46,7 +47,7 @@ export class AuthService {
       ) {
         throw new ConflictException(`Email ${payload.email} already used.`);
       } else {
-        throw new Error(e);
+        throw new BadRequestException(e);
       }
     }
   }

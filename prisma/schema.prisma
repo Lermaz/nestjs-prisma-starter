@@ -22,15 +22,14 @@ model User {
 }
 
 model Product {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id          Int      @id @default(autoincrement())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   name        String
   description String?
   price       Decimal
-  sku         String  @unique
-  published   Boolean @default(false)
+  sku         String   @unique
+  published   Boolean  @default(false)
 }
 
 enum Role {

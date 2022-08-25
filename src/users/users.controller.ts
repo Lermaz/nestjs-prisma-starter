@@ -23,7 +23,7 @@ import { UserEntity } from './entities/user.entity';
 @Controller('users')
 @ApiTags('users')
 @UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 

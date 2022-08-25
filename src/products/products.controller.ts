@@ -23,7 +23,7 @@ import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 @Controller('products')
 @ApiTags('products')
 @UseGuards(JwtAuthGuard)
-@ApiBearerAuth()
+@ApiBearerAuth('access-token')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
