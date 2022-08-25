@@ -10,26 +10,27 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  title     String   @db.VarChar(255)
+  content   String?
+  published Boolean  @default(false)
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
 model User {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   email     String   @unique
-  password  String
   firstname String?
   lastname  String?
-  role      Role     @default(USER)
-}
-
-model Product {
-  id          Int      @id @default(autoincrement())
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  name        String
-  description String?
-  price       Decimal
-  sku         String   @unique
-  published   Boolean  @default(false)
+  password  String
+  posts     Post[]
+  role      Role
 }
 
 enum Role {

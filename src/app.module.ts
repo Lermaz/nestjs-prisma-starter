@@ -3,10 +3,10 @@ import { PrismaModule } from 'nestjs-prisma';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { loggingMiddleware } from './common/middleware/logging.middleware';
-import { ProductsModule } from './products/products.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { ConfigModule } from '@nestjs/config';
+import { PostsModule } from './posts/posts.module';
 import config from './common/configs/config';
 
 @Module({
@@ -18,9 +18,9 @@ import config from './common/configs/config';
         middlewares: [loggingMiddleware(new Logger('PrismaMiddleware'))], // configure your prisma middleware
       },
     }),
-    ProductsModule,
     AuthModule,
     UsersModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

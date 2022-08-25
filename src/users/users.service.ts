@@ -1,32 +1,74 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { PasswordService } from 'src/auth/password.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private passwordService: PasswordService,
+  ) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({ data: createUserDto });
+  async create(createUserDto: CreateUserDto) {
+    const hashedPassword = await this.passwordService.hashPassword(
+      createUserDto.password,
+    );
+    createUserDto.password = hashedPassword;
+
+    return await this.prisma.user.create({ data: createUserDto });
   }
 
-  findAll() {
-    return this.prisma.user.findMany();
+  async findAll() {
+    return await this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        role: true,
+        posts: {
+          where: { published: true },
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
   }
 
-  findOne(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
+  async findOne(id: number) {
+    return await this.prisma.user.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        email: true,
+        firstname: true,
+        lastname: true,
+        role: true,
+        posts: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.prisma.user.update({
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const hashedPassword = await this.passwordService.hashPassword(
+      updateUserDto.password,
+    );
+    updateUserDto.password = hashedPassword;
+
+    return await this.prisma.user.update({
       where: { id },
       data: updateUserDto,
     });
   }
 
-  remove(id: number) {
-    return this.prisma.user.delete({ where: { id } });
+  async remove(id: number) {
+    return await this.prisma.user.delete({ where: { id } });
   }
 }

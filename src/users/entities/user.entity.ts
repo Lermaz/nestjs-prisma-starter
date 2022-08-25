@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { User, Post } from '@prisma/client';
 import { BaseModel } from 'src/common/models/base.model';
 
 export enum Role {
@@ -23,6 +23,6 @@ export class UserEntity extends BaseModel implements User {
   @ApiProperty()
   role: Role;
 
-  // @ApiProperty()
-  // posts: Post[];
+  @ApiProperty()
+  posts: Post[];
 }
